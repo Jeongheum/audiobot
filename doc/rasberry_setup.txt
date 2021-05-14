@@ -1,11 +1,27 @@
+# os install with PI imager
+
 #Hangul Setup
 	1. localisation 
 		- Language = Korean
 		- character set = UTF-8
 	2. wifi country : United states
-	3. $sudo apt-get install fonts-unfonts-core
+	3. $sudo apt-get install fonts-unfonts-core ibus-hangul
+
+# check audio input (MIC), and output (3.5mm jack)
+arecord -l # card 2: USB PnP Sound Device, device 0: USB audio
+aplay -l   # card 0: HDMI1, card 1: Headphone 
+sudo raspi-config > 1 System options > S2 audio > 0 HDMI1 1 Headphone > confirm > finish
+speaker-test -t wav # it should work
+
+# recording and play
+arecord --format=S16_LE --duration=5 --rate=16000 --file-type=raw out.raw
+aplay --format=S16_LE --rate=16000 out.raw    # recorded volume is too low, speak loudly
+
 
 #pip install
+python3 -m pip install --upgrade pip
+python3 -m pip install speechrecognition pyttsx3 selenium
+
 	- virtualenv 
 	- SpeechRecognition
 	- PyAudio
